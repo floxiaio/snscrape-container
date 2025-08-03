@@ -1,14 +1,13 @@
 FROM python:3.11-slim
 
-# Evita que python guarde .pyc
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Instalar certificados y dependencias mínimas
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instalación de snscrape
+# Instalar snscrape
 RUN pip install --no-cache-dir snscrape
 
-# Creamos una carpeta de trabajo
 WORKDIR /app
 
-# Comando por defecto (deja el contenedor vivo)
 CMD ["tail", "-f", "/dev/null"]
