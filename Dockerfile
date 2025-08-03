@@ -1,23 +1,18 @@
 FROM python:3.11-slim
 
-# Instalar dependencias necesarias y certificados raíz
+# Actualizar repos e instalar certificados raíz
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    libffi-dev \
-    libssl-dev \
     ca-certificates \
     curl \
     gnupg \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-# Forzar actualización de certificados
-RUN update-ca-certificates
-
-# Instalar snscrape con pip
+# Instalar snscrape
 RUN pip install --no-cache-dir snscrape
 
 # Establecer directorio de trabajo
 WORKDIR /app
 
-# Comando por defecto (mantener contenedor vivo)
+# Comando base (puedes cambiarlo luego por uno funcional)
 CMD ["tail", "-f", "/dev/null"]
