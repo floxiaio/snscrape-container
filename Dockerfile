@@ -1,10 +1,14 @@
 FROM python:3.11-slim
 
-# Instala snscrape y bash
-RUN apt-get update && apt-get install -y bash && \
-    pip install --no-cache-dir snscrape && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# Evita que python guarde .pyc
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
+# Instalación de snscrape
+RUN pip install --no-cache-dir snscrape
+
+# Creamos una carpeta de trabajo
 WORKDIR /app
 
-CMD ["/bin/bash"]
+# Comando por defecto (deja el contenedor vivo)
+CMD ["tail", "-f", "/dev/null"]
